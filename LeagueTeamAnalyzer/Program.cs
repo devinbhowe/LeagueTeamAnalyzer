@@ -16,7 +16,11 @@ namespace LeagueTeamAnalyzer
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new LeagueTeamAnalyzerUI());
+
+            var app = new DebugAnalyzerUI();
+            var controller = new AnalyzerController(app);
+            app.SetController(controller);
+            Application.Run(app);
         }
     }
 }
