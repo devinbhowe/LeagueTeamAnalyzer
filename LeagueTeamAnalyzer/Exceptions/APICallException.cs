@@ -20,5 +20,6 @@ namespace LeagueTeamAnalyzer.Exceptions
     public enum APICallExceptionType
     {
         InvalidSummonerName,
+        RateLimitExceeded,
     }
 }

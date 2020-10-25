@@ -36,7 +36,7 @@ namespace LeagueTeamAnalyzer
 
                 var masteryTask = m_riotApi.ChampionMastery.GetChampionMasteriesAsync(Region.Na, summoner.Id);
                 var leagueTask = m_riotApi.League.GetLeagueEntriesBySummonerAsync(Region.Na, summoner.Id);
-                var matchlistTask = m_riotApi.Match.GetMatchListAsync(Region.Na, summoner.AccountId);
+                var matchlistTask = m_riotApi.Match.GetMatchListAsync(Region.Na, summoner.AccountId, endIndex:10);
 
                 Dictionary<long, Task<Match>> matchInfoTasks = new Dictionary<long, Task<Match>>();
                 foreach (var match in matchlistTask.Result.Matches)
@@ -54,7 +54,18 @@ namespace LeagueTeamAnalyzer
             }
             catch (Exception ex)
             {
-                throw new APICallException(APICallExceptionType.InvalidSummonerName, string.Format("Summoner Name not found: {0}", summonerName));
+                if (ex.InnerException != null)
+                {
+                    if (ex.InnerException.Message.StartsWith("429"))
+                    {
+                        throw new APICallException(APICallExceptionType.RateLimitExceeded, "Rate limit exceeded!");
+                    }
+                    else
+                    {
+                        throw new APICallException(APICallExceptionType.InvalidSummonerName, string.Format("Summoner Name not found: {0}", summonerName));
+                    }
+                }
+                throw;
             }
         }
     }
@@ -92,10 +103,11 @@ namespace LeagueTeamAnalyzer
             {
                 foreach (var player in match.Value.Participants)
                 {
+                    var id = match.Value.ParticipantIdentities.Where(a => a.ParticipantId == player.ParticipantId).Select(a => a.Player.SummonerId).First();
                     //
                     // Look through each player in each match, find the player in question
                     //
-                    if (player.ParticipantId.ToString() != Summoner.Id)
+                    if (id != Summoner.Id)
                         continue;
 
                     string champion = LeagueStaticInfo.GetChampionNameByID(player.ChampionId);
@@ -103,10 +115,10 @@ namespace LeagueTeamAnalyzer
                         recentChampionsSummary.Add(champion, new RecentChampionSummary(champion));
 
                     var team = match.Value.Teams.Where(a => a.TeamId == player.TeamId).First();
-                    if (team.Win == "Yes")
-                        recentChampionsSummary[champion].Wins++;
+                    if (team.Win == "Fail")
+                        recentChampionsSummary[champion].Losses++;
                     else
-                        recentChampionsSummary[champion].Losses++; 
+                        recentChampionsSummary[champion].Wins++; 
                 }
             }
             RecentChampionsSummary = recentChampionsSummary.Select(a => a.Value).ToList();
@@ -128,7 +140,7 @@ namespace LeagueTeamAnalyzer
         {
             get
             {
-                return (double)Wins / (double)Losses;
+                return (double)Wins / (double)GamesPlayed;
             }
         }
         public int GamesPlayed
