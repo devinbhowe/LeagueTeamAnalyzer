@@ -31,12 +31,12 @@ namespace LeagueTeamAnalyzer
             m_controller = controller;
         }
 
-        public void DisplayMasteryList(List<SummonerInfo> summoners)
+        public void DisplayMasteryList( )
         {
             m_masteryList.Items.Clear();
             string [] colorNames = Enum.GetNames(typeof(ColorNames));
             int summonerCount = 0;
-            foreach (SummonerInfo summoner in summoners)
+            foreach (SummonerInfo summoner in m_controller.m_summonerInfoList)
             {
                 foreach (ChampionMastery mastery in summoner.ChampionMasteries)
                 {
@@ -52,6 +52,31 @@ namespace LeagueTeamAnalyzer
                     });
                     item.BackColor = Color.FromName(colorNames[summonerCount]);
                     m_masteryList.Items.Add(item);
+                }
+                summonerCount++;
+            }
+        }
+
+        public void DisplayRecentHistoryList( )
+        {
+            m_recentHistoryList.Items.Clear();
+            string[] colorNames = Enum.GetNames(typeof(ColorNames));
+            int summonerCount = 0;
+            foreach (SummonerInfo summoner in m_controller.m_summonerInfoList)
+            {
+                foreach (RecentChampionSummary summary in summoner.RecentChampionsSummary)
+                {
+                    ListViewItem item = new ListViewItem(new string[]
+                    {
+                        summary.Champion,
+                        summary.GamesPlayed.ToString(),
+                        summoner.Summoner.Name,
+                        summary.Winrate.ToString(),
+                        summary.Wins.ToString(),
+                        summary.Losses.ToString()
+                    });
+                    item.BackColor = Color.FromName(colorNames[summonerCount]);
+                    m_recentHistoryList.Items.Add(item);
                 }
                 summonerCount++;
             }
@@ -109,7 +134,8 @@ namespace LeagueTeamAnalyzer
 
         private void m_renderTable_Click(object sender, EventArgs e)
         {
-            DisplayMasteryList(m_controller.m_summonerInfoList);
+            DisplayMasteryList();
+            DisplayRecentHistoryList();
         }
         #endregion
     }
