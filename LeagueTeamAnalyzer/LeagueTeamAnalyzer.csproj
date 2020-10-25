@@ -46,10 +46,24 @@
       <DependentUpon>DebugAnalyzerUI.cs</DependentUpon>
     </Compile>
     <Compile Include="Exceptions\APICallException.cs" />
+    <Compile Include="UI\DisplayPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\DisplayPage.Designer.cs">
+      <DependentUpon>DisplayPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\IAnalyzerView.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\IFormController.cs" />
+    <Compile Include="UI\IPage.cs" />
     <Compile Include="UI\MasteryListSorter.cs" />
+    <Compile Include="UI\SummonerSelectPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\SummonerSelectPage.Designer.cs">
+      <DependentUpon>SummonerSelectPage.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="UI\DebugAnalyzerUI.resx">
       <DependentUpon>DebugAnalyzerUI.cs</DependentUpon>
     </EmbeddedResource>
@@ -62,6 +76,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="UI\DisplayPage.resx">
+      <DependentUpon>DisplayPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\SummonerSelectPage.resx">
+      <DependentUpon>SummonerSelectPage.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

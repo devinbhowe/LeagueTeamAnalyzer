@@ -16,14 +16,16 @@ using System.Windows.Forms;
 
 namespace LeagueTeamAnalyzer
 {
-    public partial class DebugAnalyzerUI : Form, IAnalyzerView
+    public partial class DebugAnalyzerUI : Form, IAnalyzerView, IFormController
     {
         private AnalyzerController m_controller;
+        private IPage m_currentPage;
 
         public DebugAnalyzerUI()
         {
             InitializeComponent();
-            InitializeColumnSorter();
+            m_currentPage = new SummonerSelectPage(this);
+            m_Panel.Controls.Add(m_currentPage as SummonerSelectPage);
         }
 
         public void SetController(AnalyzerController controller)
@@ -31,54 +33,28 @@ namespace LeagueTeamAnalyzer
             m_controller = controller;
         }
 
-        public void DisplayMasteryList( )
+        public void PageFinished()
         {
-            m_masteryList.Items.Clear();
-            string [] colorNames = Enum.GetNames(typeof(ColorNames));
-            int summonerCount = 0;
-            foreach (SummonerInfo summoner in m_controller.m_summonerInfoList)
+            if (m_currentPage is SummonerSelectPage)
             {
-                foreach (ChampionMastery mastery in summoner.ChampionMasteries)
-                {
-                    
-                    ListViewItem item = new ListViewItem(new string[]
-                    {
-                        LeagueStaticInfo.GetChampionNameByID(mastery.ChampionId),
-                        mastery.ChampionPoints.ToString(),
-                        summoner.Summoner.Name,
-                        "",
-                        "",
-                        ""
-                    });
-                    item.BackColor = Color.FromName(colorNames[summonerCount]);
-                    m_masteryList.Items.Add(item);
-                }
-                summonerCount++;
-            }
-        }
+                //
+                // Save the summoner names and remove that control page
+                //
+                List<string> summonerNames = (m_currentPage as SummonerSelectPage).SummonerNames;
+                m_Panel.Controls.Remove(m_currentPage as SummonerSelectPage);
+                
+                //
+                // Render the results display page
+                //
+                m_currentPage = new DisplayPage(this);
+                m_Panel.Controls.Add(m_currentPage as DisplayPage);
 
-        public void DisplayRecentHistoryList( )
-        {
-            m_recentHistoryList.Items.Clear();
-            string[] colorNames = Enum.GetNames(typeof(ColorNames));
-            int summonerCount = 0;
-            foreach (SummonerInfo summoner in m_controller.m_summonerInfoList)
-            {
-                foreach (RecentChampionSummary summary in summoner.RecentChampionsSummary)
-                {
-                    ListViewItem item = new ListViewItem(new string[]
-                    {
-                        summary.Champion,
-                        summary.GamesPlayed.ToString(),
-                        summoner.Summoner.Name,
-                        summary.Winrate.ToString(),
-                        summary.Wins.ToString(),
-                        summary.Losses.ToString()
-                    });
-                    item.BackColor = Color.FromName(colorNames[summonerCount]);
-                    m_recentHistoryList.Items.Add(item);
-                }
-                summonerCount++;
+                //
+                // Collect the summoner info to display
+                //
+                m_controller.GetSummonerInfo(summonerNames);
+                DisplayMasteryList();
+                DisplayRecentHistoryList();
             }
         }
 
@@ -114,29 +90,20 @@ namespace LeagueTeamAnalyzer
             }
         }
 
-        #region Private Methods
-        private void InitializeColumnSorter()
+        public void DisplayRecentHistoryList()
         {
-            var sorter = new MasteryListSorter();
-            m_masteryList.ListViewItemSorter = sorter;
+            (m_currentPage as DisplayPage).DisplayRecentHistoryList(m_controller.SummonerInfoList);
         }
+
+        public void DisplayMasteryList()
+        {
+            (m_currentPage as DisplayPage).DisplayMasteryList(m_controller.SummonerInfoList);
+        }
+
+        #region Private Methods
         #endregion
 
         #region Form Handlers
-        private void m_goButton_Click(object sender, EventArgs e)
-        {
-            if (m_summonerNameTextbox.Text == "")
-                return;
-
-            m_controller.GetSummonerInfo(m_summonerNameTextbox.Text);
-            m_summonerNameTextbox.Text = "";
-        }
-
-        private void m_renderTable_Click(object sender, EventArgs e)
-        {
-            DisplayMasteryList();
-            DisplayRecentHistoryList();
-        }
         #endregion
     }
 }

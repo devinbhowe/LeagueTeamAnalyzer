@@ -8,8 +8,9 @@ namespace LeagueTeamAnalyzer
 {
     public interface IAnalyzerView
     {
+        void PageFinished();
         void DisplayRecentHistoryList();
-        void DisplayMasteryList( );
+        void DisplayMasteryList();
         void DisplayResults(object item);
         void DisplayFailure(Exception ex);
     }

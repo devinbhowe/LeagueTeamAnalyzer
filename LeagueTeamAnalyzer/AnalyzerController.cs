@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LeagueTeamAnalyzer
@@ -10,13 +11,22 @@ namespace LeagueTeamAnalyzer
     {
         AnalyzerAPICalls m_apiCalls;
         IAnalyzerView m_view;
-        public List<SummonerInfo> m_summonerInfoList;
+        public List<SummonerInfo> SummonerInfoList;
 
         public AnalyzerController(IAnalyzerView view)
         {
             m_view = view;
             m_apiCalls = new AnalyzerAPICalls();
-            m_summonerInfoList = new List<SummonerInfo>();
+            SummonerInfoList = new List<SummonerInfo>();
+        }
+
+        public void GetSummonerInfo(List<string> summonerNames)
+        {
+            foreach (string summoner in summonerNames)
+            {
+                GetSummonerInfo(summoner);
+                Thread.Sleep(2000); // Wait 2 seconds to stop rate limit exceeding
+            }
         }
 
         public void GetSummonerInfo(string summonerName)
@@ -24,7 +34,7 @@ namespace LeagueTeamAnalyzer
             try
             {
                 var summonerInfo = m_apiCalls.GetSummonerInfo(summonerName);
-                m_summonerInfoList.Add(summonerInfo);
+                SummonerInfoList.Add(summonerInfo);
                 m_view.DisplayResults(summonerInfo);
             }
             catch (Exception ex)
