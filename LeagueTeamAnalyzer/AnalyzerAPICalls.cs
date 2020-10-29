@@ -21,7 +21,7 @@ namespace LeagueTeamAnalyzer
         private RiotApi m_riotApi;
         public AnalyzerAPICalls()
         {
-            m_riotApi = RiotApi.GetDevelopmentInstance("RGAPI-9c69b0c6-43b3-4716-85c0-8f49768a8f5a");
+            m_riotApi = RiotApi.GetDevelopmentInstance("RGAPI-f25d58b7-088d-42c8-a1b9-265e286afdde");
             new LeagueStaticInfo(m_riotApi);
         }
 

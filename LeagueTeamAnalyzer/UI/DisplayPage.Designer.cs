@@ -45,6 +45,7 @@
             this.winrateRecent = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.winsRecent = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lossesRecent = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.m_backButton = new System.Windows.Forms.Button();
             this.m_tabControl.SuspendLayout();
             this.m_masteryTab.SuspendLayout();
             this.m_recentGamesTab.SuspendLayout();
@@ -54,10 +55,10 @@
             // 
             this.m_tabControl.Controls.Add(this.m_masteryTab);
             this.m_tabControl.Controls.Add(this.m_recentGamesTab);
-            this.m_tabControl.Location = new System.Drawing.Point(3, 3);
+            this.m_tabControl.Location = new System.Drawing.Point(3, 46);
             this.m_tabControl.Name = "m_tabControl";
             this.m_tabControl.SelectedIndex = 0;
-            this.m_tabControl.Size = new System.Drawing.Size(593, 654);
+            this.m_tabControl.Size = new System.Drawing.Size(632, 611);
             this.m_tabControl.TabIndex = 9;
             // 
             // m_masteryTab
@@ -66,7 +67,7 @@
             this.m_masteryTab.Location = new System.Drawing.Point(4, 22);
             this.m_masteryTab.Name = "m_masteryTab";
             this.m_masteryTab.Padding = new System.Windows.Forms.Padding(3);
-            this.m_masteryTab.Size = new System.Drawing.Size(585, 628);
+            this.m_masteryTab.Size = new System.Drawing.Size(624, 628);
             this.m_masteryTab.TabIndex = 0;
             this.m_masteryTab.Text = "Mastery";
             this.m_masteryTab.UseVisualStyleBackColor = true;
@@ -82,9 +83,9 @@
             this.losses});
             this.m_masteryList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.m_masteryList.HideSelection = false;
-            this.m_masteryList.Location = new System.Drawing.Point(-4, 0);
+            this.m_masteryList.Location = new System.Drawing.Point(0, 0);
             this.m_masteryList.Name = "m_masteryList";
-            this.m_masteryList.Size = new System.Drawing.Size(586, 632);
+            this.m_masteryList.Size = new System.Drawing.Size(632, 632);
             this.m_masteryList.TabIndex = 5;
             this.m_masteryList.UseCompatibleStateImageBehavior = false;
             this.m_masteryList.View = System.Windows.Forms.View.Details;
@@ -92,7 +93,7 @@
             // championName
             // 
             this.championName.Text = "Champion";
-            this.championName.Width = 102;
+            this.championName.Width = 136;
             // 
             // mastery
             // 
@@ -102,7 +103,7 @@
             // summoner
             // 
             this.summoner.Text = "Summoner";
-            this.summoner.Width = 130;
+            this.summoner.Width = 170;
             // 
             // winrate
             // 
@@ -117,7 +118,7 @@
             // losses
             // 
             this.losses.Text = "Losses";
-            this.losses.Width = 66;
+            this.losses.Width = 71;
             // 
             // m_recentGamesTab
             // 
@@ -125,7 +126,7 @@
             this.m_recentGamesTab.Location = new System.Drawing.Point(4, 22);
             this.m_recentGamesTab.Name = "m_recentGamesTab";
             this.m_recentGamesTab.Padding = new System.Windows.Forms.Padding(3);
-            this.m_recentGamesTab.Size = new System.Drawing.Size(585, 628);
+            this.m_recentGamesTab.Size = new System.Drawing.Size(624, 585);
             this.m_recentGamesTab.TabIndex = 1;
             this.m_recentGamesTab.Text = "Recent Games";
             this.m_recentGamesTab.UseVisualStyleBackColor = true;
@@ -143,7 +144,7 @@
             this.m_recentHistoryList.HideSelection = false;
             this.m_recentHistoryList.Location = new System.Drawing.Point(0, 0);
             this.m_recentHistoryList.Name = "m_recentHistoryList";
-            this.m_recentHistoryList.Size = new System.Drawing.Size(585, 628);
+            this.m_recentHistoryList.Size = new System.Drawing.Size(621, 628);
             this.m_recentHistoryList.TabIndex = 0;
             this.m_recentHistoryList.UseCompatibleStateImageBehavior = false;
             this.m_recentHistoryList.View = System.Windows.Forms.View.Details;
@@ -151,7 +152,7 @@
             // championNameRecent
             // 
             this.championNameRecent.Text = "Champion";
-            this.championNameRecent.Width = 107;
+            this.championNameRecent.Width = 139;
             // 
             // gamesPlayedRecent
             // 
@@ -161,7 +162,7 @@
             // summonerRecent
             // 
             this.summonerRecent.Text = "Summoner";
-            this.summonerRecent.Width = 118;
+            this.summonerRecent.Width = 163;
             // 
             // winrateRecent
             // 
@@ -178,13 +179,25 @@
             this.lossesRecent.Text = "Losses";
             this.lossesRecent.Width = 66;
             // 
+            // m_backButton
+            // 
+            this.m_backButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.m_backButton.Location = new System.Drawing.Point(7, 9);
+            this.m_backButton.Name = "m_backButton";
+            this.m_backButton.Size = new System.Drawing.Size(81, 31);
+            this.m_backButton.TabIndex = 10;
+            this.m_backButton.Text = "Back";
+            this.m_backButton.UseVisualStyleBackColor = true;
+            this.m_backButton.Click += new System.EventHandler(this.m_backButton_Click);
+            // 
             // DisplayPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.m_backButton);
             this.Controls.Add(this.m_tabControl);
             this.Name = "DisplayPage";
-            this.Size = new System.Drawing.Size(600, 668);
+            this.Size = new System.Drawing.Size(638, 668);
             this.m_tabControl.ResumeLayout(false);
             this.m_masteryTab.ResumeLayout(false);
             this.m_recentGamesTab.ResumeLayout(false);
@@ -211,5 +224,6 @@
         private System.Windows.Forms.ColumnHeader winrateRecent;
         private System.Windows.Forms.ColumnHeader winsRecent;
         private System.Windows.Forms.ColumnHeader lossesRecent;
+        private System.Windows.Forms.Button m_backButton;
     }
 }

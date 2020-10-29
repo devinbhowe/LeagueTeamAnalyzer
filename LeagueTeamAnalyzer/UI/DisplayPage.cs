@@ -12,23 +12,33 @@ using LeagueTeamAnalyzer.Enums;
 
 namespace LeagueTeamAnalyzer.UI
 {
-    public partial class DisplayPage : UserControl, IPage
+    public partial class DisplayPage : UserControl
     {
-        private IAnalyzerView m_view;
+        private IFormController m_formController;
+        private AnalyzerController m_analyzerController;
 
-        public DisplayPage(IAnalyzerView view)
+        public DisplayPage( )
         {
             InitializeComponent();
             InitializeMasteryListSorter();
-            m_view = view;
         }
 
-        public void DisplayMasteryList(List<SummonerInfo> summonerInfoList)
+        public void SetFormController(IFormController formController)
+        {
+            m_formController = formController;
+        }
+
+        public void SetAnalyzerController(AnalyzerController controller)
+        {
+            m_analyzerController = controller;
+        }
+
+        public void DisplayMasteryList()
         {
             m_masteryList.Items.Clear();
             string[] colorNames = Enum.GetNames(typeof(ColorNames));
             int summonerCount = 0;
-            foreach (SummonerInfo summoner in summonerInfoList)
+            foreach (SummonerInfo summoner in m_analyzerController.SummonerInfoList)
             {
                 foreach (ChampionMastery mastery in summoner.ChampionMasteries)
                 {
@@ -49,12 +59,12 @@ namespace LeagueTeamAnalyzer.UI
             }
         }
 
-        public void DisplayRecentHistoryList(List<SummonerInfo> summonerInfoList)
+        public void DisplayRecentHistoryList()
         {
             m_recentHistoryList.Items.Clear();
             string[] colorNames = Enum.GetNames(typeof(ColorNames));
             int summonerCount = 0;
-            foreach (SummonerInfo summoner in summonerInfoList)
+            foreach (SummonerInfo summoner in m_analyzerController.SummonerInfoList)
             {
                 foreach (RecentChampionSummary summary in summoner.RecentChampionsSummary)
                 {
@@ -81,5 +91,10 @@ namespace LeagueTeamAnalyzer.UI
             m_masteryList.ListViewItemSorter = sorter;
         }
         #endregion
+
+        private void m_backButton_Click(object sender, EventArgs e)
+        {
+            m_formController.PageFinishedAsync();
+        }
     }
 }

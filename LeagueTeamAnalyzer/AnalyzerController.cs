@@ -20,26 +20,34 @@ namespace LeagueTeamAnalyzer
             SummonerInfoList = new List<SummonerInfo>();
         }
 
-        public void GetSummonerInfo(List<string> summonerNames)
+        public async Task GetSummonerInfo(List<string> summonerNames)
         {
-            foreach (string summoner in summonerNames)
+            await Task.Run(() =>
             {
-                GetSummonerInfo(summoner);
-                Thread.Sleep(2000); // Wait 2 seconds to stop rate limit exceeding
-            }
+                foreach (string summoner in summonerNames)
+                {
+                    GetSummonerInfo(summoner);
+                    Thread.Sleep(2000); // Wait 2 seconds to stop rate limit exceeding
+                }
+            });
         }
 
-        public void GetSummonerInfo(string summonerName)
+        public SummonerInfo GetSummonerInfo(string summonerName)
         {
+            if (SummonerInfoList.Where(a => a.Summoner.Name.ToUpper().Replace(" ", "") == summonerName.ToUpper()).Count() != 0)
+                return null;
+
             try
             {
                 var summonerInfo = m_apiCalls.GetSummonerInfo(summonerName);
                 SummonerInfoList.Add(summonerInfo);
                 m_view.DisplayResults(summonerInfo);
+                return summonerInfo;
             }
             catch (Exception ex)
             {
                 m_view.DisplayFailure(ex);
+                return null;
             }
         }
     }

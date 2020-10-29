@@ -8,6 +8,7 @@ namespace LeagueTeamAnalyzer.UI
 {
     public interface IFormController
     {
-        void PageFinished();
+        Task PageFinishedAsync();
+        void UpdateDebugTextbox(string text);
     }
 }

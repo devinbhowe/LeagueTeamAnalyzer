@@ -19,42 +19,30 @@ namespace LeagueTeamAnalyzer
     public partial class DebugAnalyzerUI : Form, IAnalyzerView, IFormController
     {
         private AnalyzerController m_controller;
-        private IPage m_currentPage;
 
         public DebugAnalyzerUI()
         {
             InitializeComponent();
-            m_currentPage = new SummonerSelectPage(this);
-            m_Panel.Controls.Add(m_currentPage as SummonerSelectPage);
+            m_summonerSelectPage.SetFormController(this);
+            m_displayPage.SetFormController(this);
         }
 
         public void SetController(AnalyzerController controller)
         {
             m_controller = controller;
+            m_displayPage.SetAnalyzerController(controller);
+            m_summonerSelectPage.SetAnalyzerController(controller);
         }
 
-        public void PageFinished()
+        public async Task PageFinishedAsync()
         {
-            if (m_currentPage is SummonerSelectPage)
-            {
-                //
-                // Save the summoner names and remove that control page
-                //
-                List<string> summonerNames = (m_currentPage as SummonerSelectPage).SummonerNames;
-                m_Panel.Controls.Remove(m_currentPage as SummonerSelectPage);
-                
-                //
-                // Render the results display page
-                //
-                m_currentPage = new DisplayPage(this);
-                m_Panel.Controls.Add(m_currentPage as DisplayPage);
+            m_summonerSelectPage.Visible = !m_summonerSelectPage.Visible;
+            m_displayPage.Visible = !m_displayPage.Visible;
 
-                //
-                // Collect the summoner info to display
-                //
-                m_controller.GetSummonerInfo(summonerNames);
-                DisplayMasteryList();
-                DisplayRecentHistoryList();
+            if (m_displayPage.Visible)
+            {
+                m_displayPage.DisplayMasteryList();
+                m_displayPage.DisplayRecentHistoryList();
             }
         }
 
@@ -64,42 +52,34 @@ namespace LeagueTeamAnalyzer
             if (type == typeof(SummonerInfo))
             {
                 SummonerInfo summonerInfo = item as SummonerInfo;
-                m_resultsTextbox.Text += string.Format("\nSummoner: {0}\nLevel: {1}" +
-                                                        "\nTier: {2}\nRank: {3}" +
-                                                        "\nRanked Wins: {4}\nRanked Losses: {5}\n",
-                                                        summonerInfo.Summoner.Name,
-                                                        summonerInfo.Summoner.Level,
-                                                        summonerInfo.SoloDuoLeague == null ? "" : summonerInfo.SoloDuoLeague.Tier,
-                                                        summonerInfo.SoloDuoLeague == null ? "" : summonerInfo.SoloDuoLeague.Rank,
-                                                        summonerInfo.SoloDuoLeague == null ? 0 : summonerInfo.SoloDuoLeague.Wins,
-                                                        summonerInfo.SoloDuoLeague== null ? 0 : summonerInfo.SoloDuoLeague.Losses);
+                m_summonerSelectPage.DisplaySummoner(summonerInfo);
             }
         }
 
         public void DisplayFailure(Exception ex)
         {
-            m_resultsTextbox.Text += "\nFailure!!";
-
-            if (ex is APICallException)
+            this.m_resultsTextbox.Invoke(new MethodInvoker(delegate ()
             {
-                m_resultsTextbox.Text += string.Format("\nAPI Call Exception: \n{0}", ex.Message);
-            }
-            else
+                UpdateDebugTextbox("\nFailure!!");
+
+                if (ex is APICallException)
+                {
+                    UpdateDebugTextbox(string.Format("\nAPI Call Exception: \n{0}", ex.Message));
+                }
+                else
+                {
+                    UpdateDebugTextbox(string.Format("\n{0}", ex.Message));
+                }
+            }));
+        }
+
+        public void UpdateDebugTextbox(string text)
+        {
+            this.m_resultsTextbox.Invoke(new MethodInvoker(delegate ()
             {
-                m_resultsTextbox.Text += string.Format("\n{0}", ex.Message);
-            }
+                m_resultsTextbox.Text += text;
+            }));
         }
-
-        public void DisplayRecentHistoryList()
-        {
-            (m_currentPage as DisplayPage).DisplayRecentHistoryList(m_controller.SummonerInfoList);
-        }
-
-        public void DisplayMasteryList()
-        {
-            (m_currentPage as DisplayPage).DisplayMasteryList(m_controller.SummonerInfoList);
-        }
-
         #region Private Methods
         #endregion
 
