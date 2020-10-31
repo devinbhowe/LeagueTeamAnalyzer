@@ -19,7 +19,8 @@ namespace LeagueTeamAnalyzer
 
         public static string GetChampionNameByID(long id)
         {
-            return m_championListStatic.Champions.Where(a => a.Value.Id == id).FirstOrDefault().Key;
+            var ret = m_championListStatic.Champions.Where(a => a.Value.Id == id).FirstOrDefault().Key;
+            return ret;
         }
     }
 }

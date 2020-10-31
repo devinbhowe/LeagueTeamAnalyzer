@@ -59,10 +59,15 @@ namespace LeagueTeamAnalyzer.UI
 
         private void m_startQueryButton_Click(object sender, EventArgs e)
         {
-            m_formController.PageFinishedAsync();
+            m_formController.PageFinished();
         }
 
         private void m_addSummoner_Click(object sender, EventArgs e)
+        {
+            AddSummoner();
+        }
+
+        private void AddSummoner()
         {
             if (m_summonerNameTextbox.Text == "")
                 return;

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using LeagueTeamAnalyzer.Enums;
 using RiotSharp.Endpoints.ChampionMasteryEndpoint;
-using LeagueTeamAnalyzer.Enums;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Globalization;
+using System.Windows.Forms;
 
 namespace LeagueTeamAnalyzer.UI
 {
@@ -20,7 +16,7 @@ namespace LeagueTeamAnalyzer.UI
         public DisplayPage( )
         {
             InitializeComponent();
-            InitializeMasteryListSorter();
+            InitializeListViewSorters();
         }
 
         public void SetFormController(IFormController formController)
@@ -61,7 +57,7 @@ namespace LeagueTeamAnalyzer.UI
 
         public void DisplayRecentHistoryList()
         {
-            m_recentHistoryList.Items.Clear();
+            m_recentHistorySummaryList.Items.Clear();
             string[] colorNames = Enum.GetNames(typeof(ColorNames));
             int summonerCount = 0;
             foreach (SummonerInfo summoner in m_analyzerController.SummonerInfoList)
@@ -73,28 +69,42 @@ namespace LeagueTeamAnalyzer.UI
                         summary.Champion,
                         summary.GamesPlayed.ToString(),
                         summoner.Summoner.Name,
-                        summary.Winrate.ToString(),
+                        summary.Winrate.ToString("0%"),
                         summary.Wins.ToString(),
                         summary.Losses.ToString()
                     });
                     item.BackColor = Color.FromName(colorNames[summonerCount]);
-                    m_recentHistoryList.Items.Add(item);
+                    m_recentHistorySummaryList.Items.Add(item);
                 }
                 summonerCount++;
             }
         }
 
         #region Private Methods
-        private void InitializeMasteryListSorter()
+        private void InitializeListViewSorters()
         {
-            var sorter = new MasteryListSorter();
+            List<Type> columnTypes = new List<Type>() { typeof(string), typeof(int), typeof(string), typeof(double), typeof(int), typeof(int) };
+            var sorter = new SimpleNumberSorter(1, columnTypes);
             m_masteryList.ListViewItemSorter = sorter;
+            m_recentHistorySummaryList.ListViewItemSorter = sorter;
         }
         #endregion
 
         private void m_backButton_Click(object sender, EventArgs e)
         {
-            m_formController.PageFinishedAsync();
+            m_formController.PageFinished();
+        }
+
+        private void m_recentHistorySummaryList_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            (m_recentHistorySummaryList.ListViewItemSorter as SimpleNumberSorter).ColumnToSort = e.Column;
+            m_recentHistorySummaryList.Sort();
+        }
+
+        private void m_masteryList_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            (m_masteryList.ListViewItemSorter as SimpleNumberSorter).ColumnToSort = e.Column;
+            m_masteryList.Sort();
         }
     }
 }

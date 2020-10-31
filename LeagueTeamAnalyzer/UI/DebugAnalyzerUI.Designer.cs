@@ -39,20 +39,18 @@
             // m_resultsTextbox
             // 
             this.m_resultsTextbox.Enabled = false;
-            this.m_resultsTextbox.Location = new System.Drawing.Point(1047, 35);
-            this.m_resultsTextbox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.m_resultsTextbox.Location = new System.Drawing.Point(698, 23);
             this.m_resultsTextbox.Name = "m_resultsTextbox";
-            this.m_resultsTextbox.Size = new System.Drawing.Size(332, 1024);
+            this.m_resultsTextbox.Size = new System.Drawing.Size(223, 667);
             this.m_resultsTextbox.TabIndex = 4;
             this.m_resultsTextbox.Text = "";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(1042, 11);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(695, 7);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(36, 20);
+            this.label2.Size = new System.Drawing.Size(25, 13);
             this.label2.TabIndex = 7;
             this.label2.Text = "Log";
             // 
@@ -60,39 +58,36 @@
             // 
             this.m_Panel.Controls.Add(this.m_summonerSelectPage);
             this.m_Panel.Controls.Add(this.m_displayPage);
-            this.m_Panel.Location = new System.Drawing.Point(4, 18);
-            this.m_Panel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.m_Panel.Location = new System.Drawing.Point(3, 12);
             this.m_Panel.Name = "m_Panel";
-            this.m_Panel.Size = new System.Drawing.Size(1034, 1041);
+            this.m_Panel.Size = new System.Drawing.Size(689, 677);
             this.m_Panel.TabIndex = 8;
             // 
             // m_summonerSelectPage
             // 
             this.m_summonerSelectPage.AutoSize = true;
-            this.m_summonerSelectPage.Location = new System.Drawing.Point(4, 0);
+            this.m_summonerSelectPage.Location = new System.Drawing.Point(3, 0);
             this.m_summonerSelectPage.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.m_summonerSelectPage.Name = "m_summonerSelectPage";
-            this.m_summonerSelectPage.Size = new System.Drawing.Size(1030, 1040);
+            this.m_summonerSelectPage.Size = new System.Drawing.Size(687, 676);
             this.m_summonerSelectPage.TabIndex = 1;
             // 
             // m_displayPage
             // 
             this.m_displayPage.Location = new System.Drawing.Point(0, 0);
-            this.m_displayPage.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.m_displayPage.Name = "m_displayPage";
-            this.m_displayPage.Size = new System.Drawing.Size(1030, 1036);
+            this.m_displayPage.Size = new System.Drawing.Size(687, 673);
             this.m_displayPage.TabIndex = 0;
             this.m_displayPage.Visible = false;
             // 
             // DebugAnalyzerUI
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1400, 1061);
+            this.ClientSize = new System.Drawing.Size(933, 690);
             this.Controls.Add(this.m_Panel);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.m_resultsTextbox);
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "DebugAnalyzerUI";
             this.Text = "AnalyzerUI";
             this.m_Panel.ResumeLayout(false);

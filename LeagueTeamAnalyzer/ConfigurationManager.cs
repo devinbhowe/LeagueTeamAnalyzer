@@ -8,6 +8,6 @@ namespace LeagueTeamAnalyzer
 {
     public class ConfigurationManager
     {
-        public static string LeaguePatch = "10.21.1";
+        public static string LeaguePatch = "10.22.1";
     }
 }

@@ -34,7 +34,7 @@ namespace LeagueTeamAnalyzer
             m_summonerSelectPage.SetAnalyzerController(controller);
         }
 
-        public async Task PageFinishedAsync()
+        public void PageFinished()
         {
             m_summonerSelectPage.Visible = !m_summonerSelectPage.Visible;
             m_displayPage.Visible = !m_displayPage.Visible;
